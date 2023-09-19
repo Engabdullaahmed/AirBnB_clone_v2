@@ -24,7 +24,7 @@ class Section(Base):
     name = Column(String(128), nullable=False)
 
     # Create a foreign key relationship to Pharmacy
-    pharmacy_id = Column(Integer, ForeignKey('pharmacy.id'))
+    pharmacy_id = Column(Integer, ForeignKey('pharmacys.id'))
 
     # Create a reference to the Pharmacy object using the relationship
     pharmacy = relationship('Pharmacy', back_populates='Sections')
