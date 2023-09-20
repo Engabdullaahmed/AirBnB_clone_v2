@@ -286,41 +286,18 @@ class TestConstructor(unittest.TestCase):
             self.assertEqual("", f.getvalue()[:-1])
             self.assertFalse("BaseModel.base_id_333" in storage.all().keys())
 
-    # def test_all(self):
-    #     with patch('sys.stdout', new=StringIO()) as f:
-    #         HBNBCommand().onecmd("all Emad")
-    #         self.assertIn("** class doesn't exist **", f.getvalue())
-
-    #         # TODO all class
-
-    # def test_update(self):
-    #     with patch('sys.stdout', new=StringIO()) as f:
-    #         HBNBCommand().onecmd("update")
-    #         self.assertIn("** class name missing **", f.getvalue())
-
-    #         HBNBCommand().onecmd("update Emad")
-    #         self.assertIn("** class doesn't exist **", f.getvalue())
-
-    #         HBNBCommand().onecmd("update User")
-    #         self.assertIn("** instance id missing **", f.getvalue())
-
-    #         HBNBCommand().onecmd("update User 3212133")
-    #         self.assertIn("** no instance found **", f.getvalue())
-    #         # create a new user
-    #         # TODO destroy class
-
-
-def test_count(self):
-    """test create"""
-    with patch('sys.stdout', new=StringIO()) as f:
-        HBNBCommand().onecmd("count")
-        self.assertEqual("** class name missing **", f.getvalue()[:-1])
-    with patch('sys.stdout', new=StringIO()) as f:
-        HBNBCommand().onecmd("count Emad")
-        self.assertEqual("** class doesn't exist **", f.getvalue()[:-1])
-    for k in self.__classes_dict.keys():
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd(f"count {k}")
-            expected_count = len([obj for obj in storage.all(
-            ).values() if isinstance(obj, self.__classes_dict[k])])
-            self.assertEqual(str(expected_count), f.getvalue()[:-1])
+        def test_count(self):
+            """test create"""
+            with patch('sys.stdout', new=StringIO()) as f:
+                HBNBCommand().onecmd("count")
+                self.assertEqual("** class name missing **", f.getvalue()[:-1])
+            with patch('sys.stdout', new=StringIO()) as f:
+                HBNBCommand().onecmd("count Emad")
+                self.assertEqual("** class doesn't exist **",
+                                 f.getvalue()[:-1])
+            for k in self.__classes_dict.keys():
+                with patch('sys.stdout', new=StringIO()) as f:
+                    HBNBCommand().onecmd(f"count {k}")
+                    expected_count = len([obj for obj in storage.all(
+                    ).values() if isinstance(obj, self.__classes_dict[k])])
+                    self.assertEqual(str(expected_count), f.getvalue()[:-1])
