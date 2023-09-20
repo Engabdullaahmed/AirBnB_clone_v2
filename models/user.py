@@ -25,5 +25,5 @@ class User(BaseModel, Base):
     if os.environ.get("HBNB_TYPE_STORAGE") == 'db':
         places = relationship('Place', backref='user',
                               cascade='all, delete, delete-orphan')
-    # reviews = relationship('Review', back_populates='user',
-    #                        cascade='all, delete-orphan')
+        reviews = relationship('Review', backref='user',
+                               cascade='all, delete-orphan')
