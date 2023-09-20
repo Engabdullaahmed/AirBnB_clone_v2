@@ -1,11 +1,9 @@
 #!/usr/bin/python3
-
 """ Console Module """
 import cmd
 import sys
-import shlex
-from models.__init__ import storage
 from models.base_model import BaseModel
+from models.__init__ import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -120,33 +118,32 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        args_parts = shlex.split(args)
-        className = args_parts[0]  # state
-        pairs = args_parts[1:]  # ['name=Cairo', 'id=4dc46rec']
 
-        if className not in HBNBCommand.classes:
+        args_list = args.split()
+        if args_list[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+        # create State name="California"
+        # create User email=1.1 pwassword="aasdasd"
 
-        # now obj created- set attr
-        new_instance = HBNBCommand.classes[className]()
-        # loop key value pairs to extract each and setattr of new obj
-        for pair in pairs:
-            parts = pair.split("=")
-
-            attr_name = parts[0]
-            attr_value = parts[1]
-            # remove internal double quotes
-            attr_value = attr_value.replace('"', r'\"')
-            attr_value = attr_value.replace('_', ' ')
-
-            if '.' in attr_value and attr_name != 'email':
-                attr_value = float(attr_value)
-            elif attr_value.isdigit():
-                attr_value = int(attr_value)
-            else:
-                setattr(new_instance, attr_name, attr_value)
-
+        args_dict = {}
+        for attribute in args_list[1:]:
+            if '=' in attribute:
+                attr_list = attribute.split("=")
+                if attr_list[1][0] == '"' and attr_list[1][-1] == '"':
+                    attr_value = attr_list[1].strip('"').replace('_', ' ')
+                elif attr_list[1].isdigit():
+                    attr_value = int(attr_list[1])
+                else:
+                    try:
+                        attr_value = float(attr_list[1])
+                    except Exception:
+                        continue
+                args_dict[attr_list[0]] = attr_value
+        if args_dict == {}:
+            new_instance = HBNBCommand.classes[args_list[0]]()
+        else:
+            new_instance = HBNBCommand.classes[args_list[0]](**args_dict)
         new_instance.save()
         print(new_instance.id)
 
@@ -230,12 +227,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-
             for k, v in storage.all(HBNBCommand.classes[args]).items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage.all():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
