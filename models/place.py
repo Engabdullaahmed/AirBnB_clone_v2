@@ -24,23 +24,21 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
 
-    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+    #     reviews = relationship('Review', back_populates='place',
+    #                            cascade='all, delete-orphan')
 
-        reviews = relationship('Review', back_populates='place',
-                               cascade='all, delete-orphan')
+    # # amenity_ids = []
+    # else:
 
-    # amenity_ids = []
-    else:
-
-        @property
-        def reviews(self):
-            """This method gets the attribute to return the list of Review
-            instances with place_id equals to the current place.id for
-            DBStorage.
-            """
-            reviews_list = []
-            reviews_dict = storage.all('Review')
-            for review in reviews_dict.values():
-                if review.place_id == self.id:
-                    reviews_list.append(review)
-            return reviews_list
+    #     @property
+    #     def reviews(self):
+    #         """This method gets the attribute to return the list of Review
+    #         instances with place_id equals to the current place.id for
+    #         DBStorage.
+    #         """
+    #         reviews_list = []
+    #         reviews_dict = storage.all('Review')
+    #         for review in reviews_dict.values():
+    #             if review.place_id == self.id:
+    #                 reviews_list.append(review)
+    #         return reviews_list
