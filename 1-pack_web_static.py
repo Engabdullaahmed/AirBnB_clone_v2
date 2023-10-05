@@ -12,7 +12,7 @@ def do_pack():
         f_current_time = datetime.now().strftime('%Y%m%d%H%M%S')
         file_name = f'web_static_{f_current_time}.tgz web_static'
         local("mkdir -p versions")
-        local(f"tar -cvzf versions/{file_name}")
+        local(f"tar -cvzf versions/{file_name} web_static")
         return "versions/"
     except Exception as e:
         return None
